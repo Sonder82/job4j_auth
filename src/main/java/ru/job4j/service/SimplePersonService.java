@@ -19,10 +19,10 @@ public class SimplePersonService implements PersonService {
     private final PersonRepository personRepository;
 
     @Override
-    public Optional<Person> save(Person user) {
+    public Optional<Person> save(Person person) {
         Optional<Person> result = Optional.empty();
         try {
-            result = Optional.of(personRepository.save(user));
+            result = Optional.of(personRepository.save(person));
         } catch (Exception exception) {
             LOG.error("Error message: " + exception.getMessage(), exception);
         }
@@ -40,13 +40,25 @@ public class SimplePersonService implements PersonService {
     }
 
     @Override
-    public boolean delete(Person person) {
+    public boolean deleteById(int id) {
         var result = true;
         try {
-            personRepository.delete(person);
+            personRepository.deleteById(id);
         } catch (Exception exception) {
             LOG.error("Error message: " + exception.getMessage(), exception);
             result = false;
+        }
+        return result;
+    }
+
+    @Override
+    public boolean update(Person person) {
+        boolean result = false;
+        var optionalPerson = personRepository.findById(person.getId());
+        if (optionalPerson.isPresent()) {
+            optionalPerson.get().setLogin(person.getLogin());
+            optionalPerson.get().setPassword(person.getLogin());
+            result = true;
         }
         return result;
     }

@@ -12,5 +12,7 @@ public interface PersonService {
 
     List<Person> findAll();
 
-    boolean delete(Person person);
+    boolean deleteById(int id);
+
+    boolean update(Person person);
 }

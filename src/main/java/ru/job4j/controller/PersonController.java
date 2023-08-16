@@ -8,6 +8,7 @@ import ru.job4j.model.Person;
 import ru.job4j.service.PersonService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/person")
@@ -32,22 +33,19 @@ public class PersonController {
 
     @PostMapping("/")
     public ResponseEntity<Person> create(@RequestBody Person person) {
-            return new ResponseEntity<Person>(
-                    this.persons.save(person).get(),
-                    HttpStatus.CREATED);
+        Optional<Person> optionalPerson = persons.save(person);
+        return new ResponseEntity<Person>(
+                optionalPerson.orElse(new Person()),
+                optionalPerson.isPresent() ? HttpStatus.CREATED : HttpStatus.CONFLICT);
     }
 
     @PutMapping("/")
     public ResponseEntity<Void> update(@RequestBody Person person) {
-        this.persons.save(person);
-        return ResponseEntity.ok().build();
+        return persons.update(person) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        Person person = new Person();
-        person.setId(id);
-        this.persons.delete(person);
-        return ResponseEntity.ok().build();
+        return persons.deleteById(id) ? ResponseEntity.ok().build() : ResponseEntity.internalServerError().build();
     }
 }
