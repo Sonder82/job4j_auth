@@ -41,12 +41,11 @@ public class SimplePersonService implements PersonService {
 
     @Override
     public boolean deleteById(int id) {
-        var result = true;
-        try {
-            personRepository.deleteById(id);
-        } catch (Exception exception) {
-            LOG.error("Error message: " + exception.getMessage(), exception);
-            result = false;
+        var result = false;
+        var optionalPerson = personRepository.findById(id);
+        if (optionalPerson.isPresent()) {
+            personRepository.delete(optionalPerson.get());
+            result = true;
         }
         return result;
     }
@@ -58,6 +57,7 @@ public class SimplePersonService implements PersonService {
         if (optionalPerson.isPresent()) {
             optionalPerson.get().setLogin(person.getLogin());
             optionalPerson.get().setPassword(person.getLogin());
+            personRepository.save(person);
             result = true;
         }
         return result;
