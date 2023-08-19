@@ -1,4 +1,4 @@
-package ru.job4j.filter;
+package ru.job4j.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import ru.job4j.filter.JWTAuthenticationFilter;
+import ru.job4j.filter.JWTAuthorizationFilter;
 import ru.job4j.service.SimplePersonService;
 
 import static ru.job4j.filter.JWTAuthenticationFilter.SIGN_UP_URL;

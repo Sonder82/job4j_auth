@@ -17,7 +17,7 @@ public class PersonController {
 
     private final PersonService persons;
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public List<Person> findAll() {
         return persons.findAll();
     }
@@ -31,7 +31,7 @@ public class PersonController {
         );
     }
 
-    @PostMapping("/")
+    @PostMapping("/sign-up")
     public ResponseEntity<Person> create(@RequestBody Person person) {
         Optional<Person> optionalPerson = persons.save(person);
         return new ResponseEntity<Person>(
