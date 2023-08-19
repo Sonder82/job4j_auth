@@ -1,4 +1,4 @@
-package ru.job4j.url;
+package ru.job4j.filter;
 
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
