@@ -74,11 +74,11 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<String> delete(@PathVariable int id) {
         if (!persons.deleteById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Person is not found");
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).body("Person with id " + id + " deleted");
     }
 
     @ExceptionHandler(value = {IllegalArgumentException.class, NullPointerException.class})
