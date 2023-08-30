@@ -74,6 +74,18 @@ public class SimplePersonService implements PersonService, UserDetailsService {
     }
 
     @Override
+    public boolean updatePersonPartially(Person person) {
+        boolean result = false;
+        var optionalPerson = personRepository.findById(person.getId());
+        if (optionalPerson.isPresent()) {
+            optionalPerson.get().setAddressId(person.getAddressId());
+            personRepository.save(person);
+            result = true;
+        }
+        return result;
+    }
+
+    @Override
     public Person findByLogin(String login) {
         return personRepository.findByLogin(login);
     }

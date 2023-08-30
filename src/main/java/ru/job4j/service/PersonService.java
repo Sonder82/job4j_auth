@@ -16,5 +16,7 @@ public interface PersonService {
 
     boolean update(Person person);
 
+    boolean updatePersonPartially(Person person);
+
     public Person findByLogin(String login);
 }

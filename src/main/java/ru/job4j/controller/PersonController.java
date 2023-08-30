@@ -73,6 +73,16 @@ public class PersonController {
         return persons.update(person) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updatePartially(@PathVariable int id) {
+        var optionalPerson = persons.findById(id);
+        if (optionalPerson.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Person is not found");
+        }
+        return persons.updatePersonPartially(
+                optionalPerson.get()) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable int id) {
         if (!persons.deleteById(id)) {
