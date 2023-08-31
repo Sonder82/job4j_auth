@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.model.Person;
+import ru.job4j.model.PersonDTO;
 import ru.job4j.service.PersonService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,13 +75,13 @@ public class PersonController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updatePartially(@PathVariable int id) {
+    public ResponseEntity<Void> updatePartially(@RequestBody PersonDTO personDTO, @PathVariable int id) {
         var optionalPerson = persons.findById(id);
         if (optionalPerson.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Person is not found");
         }
         return persons.updatePersonPartially(
-                optionalPerson.get()) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+                personDTO) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.job4j.model.Person;
+import ru.job4j.model.PersonDTO;
 import ru.job4j.repository.PersonRepository;
 
 import java.util.List;
@@ -67,6 +68,7 @@ public class SimplePersonService implements PersonService, UserDetailsService {
         if (optionalPerson.isPresent()) {
             optionalPerson.get().setLogin(person.getLogin());
             optionalPerson.get().setPassword(encoder.encode(person.getPassword()));
+            optionalPerson.get().setAddressId(person.getAddressId());
             personRepository.save(person);
             result = true;
         }
@@ -74,11 +76,12 @@ public class SimplePersonService implements PersonService, UserDetailsService {
     }
 
     @Override
-    public boolean updatePersonPartially(Person person) {
+    public boolean updatePersonPartially(PersonDTO personDTO) {
         boolean result = false;
-        var optionalPerson = personRepository.findById(person.getId());
+        var optionalPerson = personRepository.findById(personDTO.getId());
         if (optionalPerson.isPresent()) {
-            optionalPerson.get().setAddressId(person.getAddressId());
+            Person person = optionalPerson.get();
+            person.setPassword(encoder.encode(personDTO.getPassword()));
             personRepository.save(person);
             result = true;
         }
