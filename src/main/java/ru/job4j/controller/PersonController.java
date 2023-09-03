@@ -14,6 +14,7 @@ import ru.job4j.service.PersonService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,7 @@ public class PersonController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Person> create(@RequestBody Person person) {
+    public ResponseEntity<Person> create(@Valid @RequestBody Person person) {
         String login = person.getLogin();
         String password = person.getPassword();
         if (login == null || password == null) {
@@ -62,7 +63,7 @@ public class PersonController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Void> update(@RequestBody Person person) {
+    public ResponseEntity<Void> update(@Valid @RequestBody Person person) {
         String login = person.getLogin();
         String password = person.getPassword();
         if (login == null || password == null) {
@@ -75,7 +76,7 @@ public class PersonController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updatePartially(@RequestBody PersonDTO personDTO, @PathVariable int id) {
+    public ResponseEntity<Void> updatePartially(@Valid @RequestBody PersonDTO personDTO, @PathVariable int id) {
         var optionalPerson = persons.findById(id);
         if (optionalPerson.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Person is not found");
